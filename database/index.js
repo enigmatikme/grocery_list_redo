@@ -19,6 +19,8 @@ var insertItems = function(query, whenPosted) {
     });
 }
 
+//BRB
+
 var getItems = function(query, whenReceived) {
     connection.query(query, function(err, res) {
         if (err) {

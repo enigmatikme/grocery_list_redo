@@ -8,9 +8,9 @@ class GroceryList extends React.Component {
         return (
             <div> 
            {
-              this.props.list((item) => {
-                 <h2> { item.item } and {item.quantity} </h2>
-           })
+              this.props.allGroceries.map((item, i) => {
+                return ( <h3 key={item[i]}> { item.name } and {item.quantity} </h3>)
+              })
            }
             </div>
         )

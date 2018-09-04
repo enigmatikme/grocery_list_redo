@@ -14,6 +14,7 @@ class App extends React.Component {
       this.handleQuantityChange = this.handleQuantityChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.getList = this.getList.bind(this);
+      this.updateList = this.updateList.bind(this);
     }
 
     handleTextChange(event) {
@@ -30,52 +31,63 @@ class App extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        var that = this; 
         $.ajax({
             method: 'POST', 
             url: 'http://localhost:3001/groceries',
-            contentType: 'text/plain',
-            dataType: 'text',
-            data: this.state.name,
+            contentType: 'application/JSON',
+            data: JSON.stringify({
+                name: this.state.name,
+                quantity: this.state.quantity
+            }),
             success: function(result) {
                 console.log("ajax request success", result);
-                this.getList();
+                that.getList();
             }, 
             error: function(err) {
                 console.log("post error");
             }
         });
     }
+
+    updateList(list) {
+        this.setState({ list });
+    }
+    
     getList() {
         // event.preventDefault();
-        alert("hello");
         $.ajax({
             method: 'GET', 
             url: 'http://localhost:3001/groceries',
             // contentType: 'text/plain',
             // dataType: 'text', 
-            success: function(results) {
+            success: (results) => {
                 console.log("get request success in app.jsx", results);
-                this.setState({
-                    list: results
-                })
+                this.updateList(results);
             },
             error: function(err) {
                 console.log("could not get data from db");
             }
         })
     }
+    componentDidMount() {
+        this.getList();
+    }
     render() {
-       return (
-           <form onSubmit={this.handleSubmit}>
+        return (
+            <div> 
+            <form onSubmit={this.handleSubmit}>
             <label>
                 <div>
-                Get Muchin
+                <h1> Get Muchin </h1>
                 </div>
                 <input type="text" onChange={this.handleTextChange} />
                 <input type="number" onChange={this.handleQuantityChange}/>
             </label>
             <input type="submit" />
           </form>
+           <GroceryList allGroceries={this.state.list} />
+         </div>
 
        )
     } 
