@@ -1,4 +1,6 @@
 import React from 'react';
+import GroceryItem from './GroceryItem.jsx';
+
 
 class GroceryList extends React.Component {
     constructor(props) {
@@ -8,8 +10,8 @@ class GroceryList extends React.Component {
         return (
             <div> 
            {
-              this.props.allGroceries.map((item, i) => {
-                return ( <h3 key={item[i]}> { item.name } and {item.quantity} </h3>)
+              this.props.allGroceries.map((item) => {
+                  return (<GroceryItem item={item}/>)
               })
            }
             </div>
